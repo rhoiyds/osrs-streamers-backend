@@ -1,0 +1,12 @@
+item {
+    id: 1
+    name: 'chatbox name normal'
+}
+item {
+    id: 2
+    name: 'title bar name'
+}
+item {
+    id: 3
+    name: 'chatbox name trans'
+}

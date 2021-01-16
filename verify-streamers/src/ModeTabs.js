@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import JsonViewer from './JsonViewer';
 import VerifyTab from './VerifyTab';
+import VerifiedList from './VerifiedList';
+
 
 const useStyles = makeStyles({
   root: {
@@ -60,7 +62,7 @@ export default function ModeTabs(props) {
         <Tab icon={<AssignmentIcon />} label="JSON" />
       </Tabs>
         <TabPanel value={value} index={0}>
-          Item One
+          <VerifiedList verifiedStreamers={props.verifiedStreamers} onChange={props.onChange}></VerifiedList>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <VerifyTab verifiedStreamers={props.verifiedStreamers} unverifiedStreamers={props.unverifiedStreamers} onChange={props.onChange}></VerifyTab>

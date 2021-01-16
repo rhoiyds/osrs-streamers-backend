@@ -56,7 +56,7 @@ export default function VerifyTab(props) {
 
     const handleVerifyClick = (streamerToVerify) => {
        const verifiedStreamers = props.verifiedStreamers.slice()
-       const verifiedStreamer = verifiedStreamers.find(streamer => streamer.twitchName == streamerToVerify.twitchName)
+       const verifiedStreamer = verifiedStreamers.find(streamer => streamer.twitchName === streamerToVerify.twitchName)
       if (verifiedStreamer) {
         verifiedStreamer.characterNames.push(streamerToVerify.characterName)
       } else {
@@ -94,7 +94,7 @@ export default function VerifyTab(props) {
     <div className={classes.root}>
     {
         props.unverifiedStreamers.map((item) => (
-      <Accordion key={item} TransitionProps={{ unmountOnExit: true }}>
+      <Accordion key={item.twitchName} TransitionProps={{ unmountOnExit: true }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1c-content"

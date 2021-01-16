@@ -17,7 +17,10 @@ app.get("/unverifiedStreamers", (req, res, next) => {
     let unverifiedStreamers = []
     const streamerFolder = './streamers/';
 
-    fs.readdirSync(streamerFolder).forEach(streamer => {
+    for (let [index, streamer] of fs.readdirSync(streamerFolder).entries()) {
+      if (index == 20) {
+        break;
+      }
       fs.readdirSync(streamerFolder + streamer).forEach(characterName => {
         unverifiedStreamers.push({
             twitchName: streamer,
@@ -26,7 +29,7 @@ app.get("/unverifiedStreamers", (req, res, next) => {
             preprocessedImage: fs.readFileSync(streamerFolder + streamer + '/' + characterName + '/preprocessed_image.png', { encoding: 'base64' })
         })
       })
-    });
+    };
     res.json(unverifiedStreamers);
 });
 

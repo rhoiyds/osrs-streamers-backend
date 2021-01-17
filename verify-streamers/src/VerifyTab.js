@@ -71,7 +71,7 @@ export default function VerifyTab(props) {
          const requestOptions = {
             method: 'DELETE'
          };
-        fetch('http://localhost:3000/streamer/' + streamerToDelete.twitchName + '/name/' + streamerToDelete.characterName, requestOptions)
+        fetch('http://localhost:3003/streamer/' + streamerToDelete.twitchName + '/name/' + streamerToDelete.characterName, requestOptions)
         .then(res => res.json())
         .then((data) => {
             console.log(data)
@@ -93,8 +93,8 @@ export default function VerifyTab(props) {
   return (
     <div className={classes.root}>
     {
-        props.unverifiedStreamers.map((item) => (
-      <Accordion key={item.twitchName} TransitionProps={{ unmountOnExit: true }}>
+        props.unverifiedStreamers.map((item, index) => (
+      <Accordion key={index + item.twitchName} TransitionProps={{ unmountOnExit: true }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1c-content"
@@ -102,20 +102,20 @@ export default function VerifyTab(props) {
                 >
                   <div className={classes.column}>
                     <Typography className={classes.heading}>
-                        {item.twitchName}
+                        <a target="_blank" rel="noreferrer" href={"https://twitch.tv/" + item.twitchName}> {item.twitchName} </a>
                     </Typography>
                     <Typography className={classes.secondaryHeading}>
                         {getAdditionalCharacterNames(item)}
                     </Typography>
                   </div>
                   <div className={classes.column}>
-                    <Typography className={classes.secondaryHeading}>
+                    <div className={classes.secondaryHeading}>
                         <TextField
                           label="Character name"
                           defaultValue={item.characterName}
                           onChange={(e) => handleOnNameModify(item, e)}
                         />
-                    </Typography>
+                    </div>
                   </div>
                 <div className={classes.column}>
                     <img src={`data:image/jpeg;base64,${item.preprocessedImage}`} height="40px" alt="Preprocessed" />

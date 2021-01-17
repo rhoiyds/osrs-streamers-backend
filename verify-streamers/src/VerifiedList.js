@@ -88,8 +88,8 @@ export default function VerifiedList(props) {
        </IconButton>
     </Paper>
     {
-        props.verifiedStreamers.map((item) => (
-      <Accordion key={item.twitchName} TransitionProps={{ unmountOnExit: true }}>
+        props.verifiedStreamers.map((item, index) => (
+      <Accordion key={index + item.twitchName} TransitionProps={{ unmountOnExit: true }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1c-content"
@@ -102,18 +102,18 @@ export default function VerifiedList(props) {
                   </div>
                   <div className={classes.column}>
                     <Typography className={classes.secondaryHeading}>
-                         <div>
+                         <span>
                             {item.characterNames
-                              .map(characterName => <span>{characterName}</span>)
+                              .map(characterName => <span key={item.twitchName + characterName}>{characterName}</span>)
                               .reduce((prev, curr) => [prev, ', ', curr])}
-                         </div>
+                         </span>
                     </Typography>
                   </div>
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
                   {
-                      item.characterNames.map((characterName) => (
-                          <div className={classes.column}>
+                      item.characterNames.map((index, characterName) => (
+                          <div className={classes.column} key={index + item.twitchName + characterName}>
                               <TextField
                                 defaultValue={characterName}
                                 onChange={(e) => {updateName(item, characterName, e.target.value)}}

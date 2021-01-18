@@ -24,7 +24,7 @@ class App extends Component {
     }
 
   componentDidMount() {
-    fetch('http://localhost:3003/unverifiedStreamers')
+    fetch('http://localhost:' + process.env.REACT_APP_API_PORT + '/unverifiedStreamers')
     .then(res => res.json())
     .then((data) => {
       this.setState({ unverifiedStreamers: data })

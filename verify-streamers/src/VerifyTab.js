@@ -71,7 +71,7 @@ export default function VerifyTab(props) {
          const requestOptions = {
             method: 'DELETE'
          };
-        fetch('http://localhost:3003/streamer/' + streamerToDelete.twitchName + '/name/' + streamerToDelete.characterName, requestOptions)
+        fetch('http://localhost:' + process.env.REACT_APP_API_PORT + + '/streamer/' + streamerToDelete.twitchName + '/name/' + streamerToDelete.characterName, requestOptions)
         .then(res => res.json())
         .then((data) => {
             console.log(data)
@@ -93,7 +93,7 @@ export default function VerifyTab(props) {
   return (
     <div className={classes.root}>
     {
-        props.unverifiedStreamers.map((item, index) => (
+        props.unverifiedStreamers.slice(0,10).map((item, index) => (
       <Accordion key={index + item.twitchName} TransitionProps={{ unmountOnExit: true }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
@@ -123,7 +123,7 @@ export default function VerifyTab(props) {
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
                   <div className={classes.column}>
-                    <img src={`data:image/jpeg;base64,${item.detections}`} height="650px" alt="Detections"/>
+                    <img src={"http://localhost:" + process.env.REACT_APP_API_PORT + "/streamer/" + item.twitchName + "/name/" + item.characterName} height="650px" alt="Detections"/>
                   </div>
                 </AccordionDetails>
                 <Divider />

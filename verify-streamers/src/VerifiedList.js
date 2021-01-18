@@ -112,7 +112,7 @@ export default function VerifiedList(props) {
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
                   {
-                      item.characterNames.map((index, characterName) => (
+                      item.characterNames.map((characterName, index) => (
                           <div className={classes.column} key={index + item.twitchName + characterName}>
                               <TextField
                                 defaultValue={characterName}

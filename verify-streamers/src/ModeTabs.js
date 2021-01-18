@@ -58,7 +58,7 @@ export default function ModeTabs(props) {
         aria-label="icon label tabs example"
       >
         <Tab icon={<CheckCircleIcon />} label="VERIFIED" />
-        <Tab icon={<AddCircleIcon />} label="REVIEW" />
+        <Tab icon={<AddCircleIcon />} label={"REVIEW " + props.unverifiedStreamers.length} />
         <Tab icon={<AssignmentIcon />} label="JSON" />
       </Tabs>
         <TabPanel value={value} index={0}>

@@ -9,7 +9,7 @@ const port = 3000;
 
 app.use(cors());
 
-// Configuring body parser middleware
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -26,7 +26,7 @@ app.get("/unverifiedStreamers", (req, res, next) => {
         })
       })
     };
-    res.json(unverifiedStreamers);
+    return res.json(unverifiedStreamers);
 });
 
 app.delete("/streamer/:streamer/name/:name", function(req, res){
@@ -34,15 +34,19 @@ app.delete("/streamer/:streamer/name/:name", function(req, res){
     const streamer = req.params['streamer']
     const name = req.params['name']
 
-    fs.rmdirSync(streamerFolder + streamer + "/" + name, { recursive: true });
+    return fs.rmdirSync(streamerFolder + streamer + "/" + name, { recursive: true });
 
 })
 
 app.get("/streamer/:streamer/name/:name", function(req, res){
     const streamer = req.params['streamer']
     const name = req.params['name']
-    const streamerFolder = './streamers/';
-    res.sendFile(streamerFolder + streamer + '/' + name + '/detections.png')
+    const streamerFolder = '/streamers/';
+    const path = streamerFolder + streamer + '/' + name + '/thumbnail.png'
+    if (fs.existsSync(path)) {
+       return res.sendFile(path)
+    }
+    return res.sendFile(streamerFolder + streamer + '/' + name + '/detections.png')
 })
 
 app.listen(port, () => console.log(`Verified streamer server listening on port ${port}!`));

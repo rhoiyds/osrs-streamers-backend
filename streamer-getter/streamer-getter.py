@@ -248,8 +248,8 @@ def verify_streamers(streams):
 
       path = "/streamers/{}/{}".format(stream.channel.display_name, name)
       Path(path).mkdir(parents=True, exist_ok=True)
-      drawn_detections = get_drawn_detections(image_np, detections)
-      drawn_detections.save("/streamers/{}/{}/detections.png".format(stream.channel.display_name, name))
+      thumbnail = Image.fromarray(image_np)
+      thumbnail.save("/streamers/{}/{}/thumbnail.png".format(stream.channel.display_name, name))
       preprocessed_image_to_save = Image.fromarray(np.array(preprocessed_image))
       preprocessed_image_to_save.save("/streamers/{}/{}/preprocessed_image.png".format(stream.channel.display_name, name))
 

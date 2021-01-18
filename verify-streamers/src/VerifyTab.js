@@ -8,7 +8,9 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import CheckIcon from '@material-ui/icons/Check';
+import ReplayIcon from '@material-ui/icons/Replay';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +73,7 @@ export default function VerifyTab(props) {
          const requestOptions = {
             method: 'DELETE'
          };
-        fetch('http://localhost:' + process.env.REACT_APP_API_PORT + + '/streamer/' + streamerToDelete.twitchName + '/name/' + streamerToDelete.characterName, requestOptions)
+        fetch('http://localhost:' + process.env.REACT_APP_API_PORT + '/streamer/' + streamerToDelete.twitchName + '/name/' + streamerToDelete.characterName, requestOptions)
         .then(res => res.json())
         .then((data) => {
             console.log(data)
@@ -113,6 +115,8 @@ export default function VerifyTab(props) {
                         <TextField
                           label="Character name"
                           defaultValue={item.characterName}
+                          onClick={(event) => event.stopPropagation()}
+                          onFocus={(event) => event.stopPropagation()}
                           onChange={(e) => handleOnNameModify(item, e)}
                         />
                     </div>
@@ -120,19 +124,20 @@ export default function VerifyTab(props) {
                 <div className={classes.column}>
                     <img src={`data:image/jpeg;base64,${item.preprocessedImage}`} height="40px" alt="Preprocessed" />
                 </div>
+                <div className={classes.column}>
+                  <IconButton aria-label="check" onFocus={(event) => event.stopPropagation()} onClick={(event) => {event.stopPropagation(); handleVerifyClick(item)}}>
+                    <CheckIcon />
+                  </IconButton>
+                    <IconButton aria-label="replay" onFocus={(event) => event.stopPropagation()} onClick={(event) => {event.stopPropagation(); handleSkipClick(item)}}>
+                      <ReplayIcon />
+                    </IconButton>
+                </div>
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
                   <div className={classes.column}>
-                    <img src={"http://localhost:" + process.env.REACT_APP_API_PORT + "/streamer/" + item.twitchName + "/name/" + item.characterName} height="650px" alt="Detections"/>
+                    <img src={"http://localhost:" + process.env.REACT_APP_API_PORT + "/streamer/" + item.twitchName + "/name/" + item.characterName} height="650px" alt="Thumbnail"/>
                   </div>
                 </AccordionDetails>
-                <Divider />
-                <AccordionActions>
-                  <Button size="small" onClick={() => handleSkipClick(item)}>Skip</Button>
-                  <Button size="small" color="primary" onClick={() => handleVerifyClick(item)}>
-                    Verify
-                  </Button>
-                </AccordionActions>
       </Accordion>
        ))
       }

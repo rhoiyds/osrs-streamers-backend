@@ -20,6 +20,7 @@ from statistics import mean
 import os
 from pathlib import Path
 import sys
+import difflib
 
 os.environ['TESSDATA_PREFIX']='/tesseract/tesseract-4.1.1/tessdata'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -179,6 +180,9 @@ def save_poor_detection_to_file(stream, image_np, detections):
   im = get_drawn_detections(image_np, detections)
   im.save("{}/{}-{}.png".format(PATH_TO_POOR_DETECTION, stream.created_at, stream.channel.display_name))
 
+def closeEnoughMatch(seq1, seq2):
+    return difflib.SequenceMatcher(a=seq1.lower(), b=seq2.lower()).ratio()
+
 def get_drawn_detections(image_np, detections):
       image_np_with_detections=image_np.copy()
       viz_utils.visualize_boxes_and_labels_on_image_array(
@@ -238,13 +242,22 @@ def verify_streamers(streams):
 
       streamer_obj = next((streamer for streamer in verified_streamers if stream.channel.display_name == streamer['twitchName']), None)
       if streamer_obj:
-        if name in streamer_obj['characterNames']:
-          print("'{}' matches confidence {}% \u2705".format(name, confidence))
-          continue
+        matchFound = False
+        for characterName in streamer_obj['characterNames']:
+            closeEnough = closeEnoughMatch(characterName, name)
+            print("'{}' and '{}' are {}% close".format(name, characterName, closeEnough))
+            if closeEnough > 0.84:
+                matchFound = True
+                print("'{}' matches confidence {}% \u2705".format(name, confidence))
+                break
+
+      if matchFound:
+        continue
 
       if not name or not name.strip():
         name = 'Undetermined'
-      print(" queueing for processing \u27A1\uFE0F")
+
+      print("Nothing was close enough - queueing for processing \u27A1\uFE0F")
 
       path = "/streamers/{}/{}".format(stream.channel.display_name, name)
       Path(path).mkdir(parents=True, exist_ok=True)

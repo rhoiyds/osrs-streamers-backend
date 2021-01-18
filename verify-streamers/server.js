@@ -33,9 +33,8 @@ app.delete("/streamer/:streamer/name/:name", function(req, res){
     const streamerFolder = './streamers/';
     const streamer = req.params['streamer']
     const name = req.params['name']
-
-    return fs.rmdirSync(streamerFolder + streamer + "/" + name, { recursive: true });
-
+    fs.rmdirSync(streamerFolder + streamer + "/" + name, { recursive: true, force: true});
+    res.sendStatus(200);
 })
 
 app.get("/streamer/:streamer/name/:name", function(req, res){

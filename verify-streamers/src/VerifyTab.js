@@ -3,11 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionActions from '@material-ui/core/AccordionActions';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import ReplayIcon from '@material-ui/icons/Replay';
@@ -74,9 +72,8 @@ export default function VerifyTab(props) {
             method: 'DELETE'
          };
         fetch('http://localhost:' + process.env.REACT_APP_API_PORT + '/streamer/' + streamerToDelete.twitchName + '/name/' + streamerToDelete.characterName, requestOptions)
-        .then(res => res.json())
-        .then((data) => {
-            console.log(data)
+        .then((res) => {
+            console.log(res)
         })
         .catch(console.log)
     }
@@ -96,7 +93,7 @@ export default function VerifyTab(props) {
     <div className={classes.root}>
     {
         props.unverifiedStreamers.slice(0,10).map((item, index) => (
-      <Accordion key={index + item.twitchName} TransitionProps={{ unmountOnExit: true }}>
+      <Accordion key={index + item.twitchName + item.characterName} TransitionProps={{ unmountOnExit: true }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1c-content"

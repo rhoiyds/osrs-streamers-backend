@@ -18,13 +18,17 @@ app.get("/unverifiedStreamers", (req, res, next) => {
     const streamerFolder = './streamers/';
 
     for (let [index, streamer] of fs.readdirSync(streamerFolder).entries()) {
-      fs.readdirSync(streamerFolder + streamer).forEach(characterName => {
-        unverifiedStreamers.push({
-            twitchName: streamer,
-            characterName: characterName,
-            preprocessedImage: fs.readFileSync(streamerFolder + streamer + '/' + characterName + '/preprocessed_image.png', { encoding: 'base64' })
-        })
-      })
+        try {
+          fs.readdirSync(streamerFolder + streamer).forEach(characterName => {
+            unverifiedStreamers.push({
+                twitchName: streamer,
+                characterName: characterName,
+                preprocessedImage: fs.readFileSync(streamerFolder + streamer + '/' + characterName + '/preprocessed_image.png', { encoding: 'base64' })
+            })
+          })
+        } catch (e) {
+            console.log('Errors with streamer ' + streamer + ' please delete folder.')
+        }
     };
     return res.json(unverifiedStreamers);
 });

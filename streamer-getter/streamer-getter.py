@@ -209,7 +209,7 @@ def verify_streamers(streams):
       highest_confidence_per_class = get_highest_confidence_detections(detections)
       key_list = list(highest_confidence_per_class.keys())
       if len(key_list) == 0:
-        print("poor detection - no classes \u274c")
+        print("poor detection, no classes - skipping")
         save_poor_detection_to_file(stream, image_np, detections)
         continue
       max_key = key_list[0]
@@ -245,10 +245,9 @@ def verify_streamers(streams):
         matchFound = False
         for characterName in streamer_obj['characterNames']:
             closeEnough = closeEnoughMatch(characterName, name)
-            print("'{}' and '{}' are {}% close".format(name, characterName, closeEnough))
             if closeEnough > 0.84:
                 matchFound = True
-                print("'{}' matches confidence {}% \u2705".format(name, confidence))
+                print("'{}' and '{}' are close enough ({}%)".format(name, characterName, closeEnough))
                 break
 
       if matchFound:
@@ -257,14 +256,18 @@ def verify_streamers(streams):
       if not name or not name.strip():
         name = 'Undetermined'
 
-      print("Nothing was close enough - queueing for processing \u27A1\uFE0F")
+      print("No matches found - queueing for processing")
 
-      path = "/streamers/{}/{}".format(stream.channel.display_name, name)
-      Path(path).mkdir(parents=True, exist_ok=True)
-      thumbnail = Image.fromarray(image_np)
-      thumbnail.save("/streamers/{}/{}/thumbnail.png".format(stream.channel.display_name, name))
-      preprocessed_image_to_save = Image.fromarray(np.array(preprocessed_image))
-      preprocessed_image_to_save.save("/streamers/{}/{}/preprocessed_image.png".format(stream.channel.display_name, name))
+      try:
+        path = "/streamers/{}/{}".format(stream.channel.display_name, name)
+        Path(path).mkdir(parents=True, exist_ok=True)
+        thumbnail = Image.fromarray(image_np)
+        thumbnail.save("/streamers/{}/{}/thumbnail.png".format(stream.channel.display_name, name))
+        preprocessed_image_to_save = Image.fromarray(np.array(preprocessed_image))
+        preprocessed_image_to_save.save("/streamers/{}/{}/preprocessed_image.png".format(stream.channel.display_name, name))
+      except:
+        print("Error saving file {} - skipping".format(path))
+        pass
 
 streams = get_twitch_streamers()
 verified_streamers = get_osrs_streamers()
